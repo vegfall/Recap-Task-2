@@ -1,7 +1,7 @@
 import java.sql.*;
 
 public class Database {
-    Connection sqlConnection;
+    private static Connection sqlConnection;
 
     public Database() {
         sqlConnection = getSqlConnection();
@@ -19,6 +19,24 @@ public class Database {
         }
     }
 
+    public static void readDatabase(String string) {
+
+    }
+
+    public static void readDatabase(Type type) {
+        try (Statement sqlStatement = sqlConnection.createStatement()) {
+            ResultSet result = sqlStatement.executeQuery("SELECT * FROM " + type.toString().toLowerCase());
+
+            while (result.next()) {
+                System.out.println(
+                        "ID: " + result.getString("Id")
+                        + " Title: " + result.getString("Title")
+                        + " Category: " + result.getString("Category"));
+            }
+        } catch (SQLException error) {
+            error.printStackTrace();
+        }
+    }
 }
 /**
  * class Database {
