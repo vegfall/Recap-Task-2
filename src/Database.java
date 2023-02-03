@@ -4,7 +4,19 @@ public class Database {
     Connection sqlConnection;
 
     public Database() {
-        
+        sqlConnection = getSqlConnection();
+    }
+
+    private Connection getSqlConnection() {
+        try {
+            return DriverManager.getConnection(
+                    "jdbc:mysql://localhost:3306/media?allowPublicKeyRetrieval=true&useSSL=false",
+                    "mainUser",
+                    "password123");
+        } catch (SQLException error) {
+            error.printStackTrace();
+            return null;
+        }
     }
 
 }
