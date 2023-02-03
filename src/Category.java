@@ -1,0 +1,3 @@
+public enum Category {
+    FANTASY, SCIENCE_FICTION, ACTION, HORROR, OTHER
+}
