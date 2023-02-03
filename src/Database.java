@@ -1,3 +1,4 @@
+import javax.xml.transform.Result;
 import java.sql.*;
 
 public class Database {
@@ -7,7 +8,7 @@ public class Database {
         sqlConnection = getSqlConnection();
     }
 
-    private Connection getSqlConnection() {
+    private static Connection getSqlConnection() {
         try {
             return DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/media?allowPublicKeyRetrieval=true&useSSL=false",
@@ -19,19 +20,37 @@ public class Database {
         }
     }
 
-    public static void readDatabase(String string) {
+    public static void readDatabase(Type type, String string) {
+        try {
+            PreparedStatement sqlPreparedStatement;
 
+            sqlPreparedStatement = sqlConnection.prepareStatement("SELECT * FROM " + type.toString().toLowerCase() + " WHERE Id = ?");
+
+            sqlPreparedStatement.setString(1, string);
+
+            printDatabaseQuery(sqlPreparedStatement.executeQuery());
+        } catch (SQLException error) {
+            error.printStackTrace();
+        }
     }
 
     public static void readDatabase(Type type) {
         try (Statement sqlStatement = sqlConnection.createStatement()) {
             ResultSet result = sqlStatement.executeQuery("SELECT * FROM " + type.toString().toLowerCase());
 
+            printDatabaseQuery(result);
+        } catch (SQLException error) {
+            error.printStackTrace();
+        }
+    }
+
+    private static void printDatabaseQuery(ResultSet result) {
+        try {
             while (result.next()) {
                 System.out.println(
                         "ID: " + result.getString("Id")
-                        + " Title: " + result.getString("Title")
-                        + " Category: " + result.getString("Category"));
+                                + " Title: " + result.getString("Title")
+                                + " Category: " + result.getString("Category"));
             }
         } catch (SQLException error) {
             error.printStackTrace();

@@ -4,6 +4,6 @@ public class Main {
     public static void main(String[] args) {
         database = new Database();
 
-        database.readDatabase(Type.BOOK);
+        database.readDatabase(Type.BOOK, "3");
     }
 }
