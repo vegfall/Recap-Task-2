@@ -1,9 +1,12 @@
 public class Main {
     public static Database database;
+    public static BookDatabase bookDatabase;
 
     public static void main(String[] args) {
-        database = new Database();
+        bookDatabase = new BookDatabase();
 
-        database.readDatabase(Type.BOOK, "3");
+        //database = new Database();
+
+        //database.readDatabase(Type.BOOK, "3");
     }
 }
