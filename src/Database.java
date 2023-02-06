@@ -9,19 +9,66 @@ public class Database {
 
     private static Connection connectDatabase() {
         try {
-            return DriverManager.getConnection(
+            Connection connection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/media?allowPublicKeyRetrieval=true&useSSL=false",
                     "mainUser",
                     "password123");
+
+            System.out.println("Database successfully connected...");
+
+            return connection;
         } catch (SQLException error) {
             error.printStackTrace();
             return null;
         }
     }
 
-    protected static Connection getSqlConnection() {
-        return sqlConnection;
+    public static void searchDatabase(String column, String input) {
+
     }
+    public static void searchDatabase(String column, String input, Type type) {
+        try {
+            PreparedStatement sqlPrepareStatement;
+
+            String query = "%" + input + "%";
+
+            sqlPrepareStatement = sqlConnection.prepareStatement("SELECT * FROM " + type.toString() + " WHERE " + column + " LIKE ?");
+
+            sqlPrepareStatement.setString(1, query);
+
+            printDatabaseQuery(sqlPrepareStatement.executeQuery());
+        } catch (SQLException error) {
+            error.printStackTrace();
+        }
+    };
+
+    public static void searchDatabase(Category category) {};
+
+    public static void searchDatabase(Category category, Type type) {
+        try (Statement sqlStatement = sqlConnection.createStatement()){
+            String query = "'" + category + "'";
+
+            ResultSet result = sqlStatement.executeQuery("SELECT * FROM " + type.toString() + " WHERE Category LIKE " + query);
+
+            printDatabaseQuery(result);
+        } catch (SQLException error) {
+            error.printStackTrace();
+        }
+    };
+    public static void searchDatabase(String column, int input) {};
+    public static void searchDatabase(String column, int input, Type type) {
+        try {
+            PreparedStatement sqlPrepareStatement = sqlConnection.prepareStatement("SELECT * FROM " + type.toString() + " WHERE " + column + " LIKE ?");
+
+            sqlPrepareStatement.setInt(1, input);
+
+            printDatabaseQuery(sqlPrepareStatement.executeQuery());
+        } catch (SQLException error) {
+            error.printStackTrace();
+        }
+    };
+
+
 
     public static void readDatabase(Type type, String string) {
         try {

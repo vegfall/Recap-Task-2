@@ -1,12 +1,22 @@
 public class Main {
     public static Database database;
-    public static BookDatabase bookDatabase;
+    public static MediaStorage mediaStorage;
+    public static UserController userController;
 
     public static void main(String[] args) {
-        bookDatabase = new BookDatabase();
+        database = new Database();
+        userController = new UserController();
+        mediaStorage = new MediaStorage();
 
-        //database = new Database();
 
-        //database.readDatabase(Type.BOOK, "3");
+        //database.searchDatabase("title", "2", Type.BOOK);
+        //database.searchDatabase(Category.ACTION, Type.BOOK);
+        //database.searchDatabase("Id", 2, Type.BOOK);
+
+
+    }
+
+    public static void NewLine() {
+        System.out.println("--------------------");
     }
 }
