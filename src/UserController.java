@@ -26,4 +26,8 @@ public class UserController {
 
         return value;
     }
+
+    public static String getUserString() {
+        return new Scanner(System.in).nextLine();
+    }
 }

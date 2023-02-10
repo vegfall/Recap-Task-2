@@ -59,7 +59,32 @@ public class Database {
             System.exit(0);
         }
 
+        disconnectDatabase();
         return list;
+    }
+
+    public static ArrayList<String[]> getPersonList() {
+        ArrayList<String[]> personList = new ArrayList<>();
+
+        connectDatabase();
+
+        try (Statement sqlStatement = sqlConnection.createStatement()){
+            ResultSet result = sqlStatement.executeQuery("SELECT * FROM person");
+
+            while (result.next()) {
+                String[] array = {result.getString("Id"), result.getString("Name")};
+
+                personList.add(array);
+            }
+
+        } catch (SQLException error) {
+            disconnectDatabase();
+            error.printStackTrace();
+            System.exit(0);
+        }
+
+        disconnectDatabase();
+        return personList;
     }
 
     private static void connectDatabase() {

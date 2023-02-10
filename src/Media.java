@@ -4,6 +4,22 @@ public abstract class Media {
     private final Category category;
     private final Type type;
 
+    public int getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
     public Media(Type type, int id, String title, Category category) {
         this.type = type;
         this.id = id;
