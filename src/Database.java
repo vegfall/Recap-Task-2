@@ -1,28 +1,93 @@
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Database {
-    protected static Connection sqlConnection;
+    private static Connection sqlConnection;
 
-    public Database() {
-        sqlConnection = connectDatabase();
+    public static ArrayList<Media> getDatabaseList(Type database) {
+        ArrayList<Media> list = new ArrayList<>();
+
+        connectDatabase();
+
+        try (Statement sqlStatement = sqlConnection.createStatement()) {
+            ResultSet result;
+
+            if (database == Type.BOOK || database == null) {
+                result = sqlStatement.executeQuery("SELECT * FROM book");
+
+                while (result.next()) {
+                    list.add(new Book(
+                            result.getInt("Id"),
+                            result.getString("Title"),
+                            Category.valueOf(result.getString("Category").toUpperCase()),
+                            result.getString("Author"),
+                            result.getInt("Pages")
+                    ));
+                }
+            }
+
+            if (database == Type.VIDEO || database == null) {
+                result = sqlStatement.executeQuery("SELECT * FROM video");
+
+                while (result.next()) {
+                    list.add(new Video(
+                            result.getInt("Id"),
+                            result.getString("Title"),
+                            Category.valueOf(result.getString("Category").toUpperCase()),
+                            result.getString("Director"),
+                            result.getInt("Duration")
+                    ));
+                }
+            }
+
+            if (database == Type.GAME || database == null) {
+                result = sqlStatement.executeQuery("SELECT * FROM game");
+
+                while (result.next()) {
+                    list.add(new Game(
+                            result.getInt("Id"),
+                            result.getString("Title"),
+                            Category.valueOf(result.getString("Category").toUpperCase()),
+                            result.getString("Developer"),
+                            result.getInt("Duration")
+                    ));
+                }
+            }
+        } catch (SQLException error) {
+            disconnectDatabase();
+            error.printStackTrace();
+            System.exit(0);
+        }
+
+        return list;
     }
 
-    private static Connection connectDatabase() {
+    public static void addToDatabase(Type database, Media object) {
+        
+    }
+
+    private static void connectDatabase() {
         try {
-            Connection connection = DriverManager.getConnection(
+            sqlConnection = DriverManager.getConnection(
                     "jdbc:mysql://localhost:3306/media?allowPublicKeyRetrieval=true&useSSL=false",
                     "mainUser",
                     "password123");
-
-            System.out.println("Database successfully connected...");
-
-            return connection;
         } catch (SQLException error) {
             error.printStackTrace();
-            return null;
         }
     }
 
+    private static void disconnectDatabase() {
+        try {
+            sqlConnection.close();
+        } catch (SQLException error) {
+            error.printStackTrace();
+        }
+    }
+
+
+
+    /**
     public static void searchDatabase(String column, String input) {
 
     }
@@ -105,5 +170,6 @@ public class Database {
         } catch (SQLException error) {
             error.printStackTrace();
         }
-    }
+    }*/
+
 }

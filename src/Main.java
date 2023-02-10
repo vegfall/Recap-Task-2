@@ -7,13 +7,6 @@ public class Main {
         database = new Database();
         userController = new UserController();
         mediaStorage = new MediaStorage();
-
-
-        //database.searchDatabase("title", "2", Type.BOOK);
-        //database.searchDatabase(Category.ACTION, Type.BOOK);
-        //database.searchDatabase("Id", 2, Type.BOOK);
-
-
     }
 
     public static void NewLine() {

@@ -10,8 +10,8 @@ public class Video extends Media {
         return duration;
     }
 
-    public Video(String title, Category category, String director, int duration) {
-        super(title, category);
+    public Video(int id, String title, Category category, String director, int duration) {
+        super(Type.VIDEO, id, title, category);
         this.director = director;
         this.duration = duration;
     }
