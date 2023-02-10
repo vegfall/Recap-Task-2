@@ -4,10 +4,6 @@ public abstract class Media {
     private final Category category;
     private final Type type;
 
-    public Type getType() {
-        return type;
-    }
-
     public Media(Type type, int id, String title, Category category) {
         this.type = type;
         this.id = id;

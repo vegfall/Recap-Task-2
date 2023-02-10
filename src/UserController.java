@@ -6,12 +6,6 @@ public class UserController {
         System.out.println("UserController successfully created...");
     }
 
-    public static int getUserMenuChoice(int max) {
-        System.out.print("Please select desired option: ");
-
-        return getUserInt(1, max);
-    }
-
     public static int getUserInt(int min, int max) {
         int value = 0;
         boolean valid = false;

@@ -62,10 +62,6 @@ public class Database {
         return list;
     }
 
-    public static void addToDatabase(Type database, Media object) {
-        
-    }
-
     private static void connectDatabase() {
         try {
             sqlConnection = DriverManager.getConnection(

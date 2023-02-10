@@ -30,5 +30,19 @@ public class DatabaseTest {
         } catch (SQLException error) {
             error.printStackTrace();
         }
+
+        //Test
+    }
+
+    @Test
+    public void Test() {
+
+        int arr[] = new int[3];
+        int l = arr.length;
+        System.out.println(arr.length);
+
+        l=l-1;
+
+        System.out.println(arr.length);
     }
 }
