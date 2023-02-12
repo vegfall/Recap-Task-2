@@ -9,23 +9,20 @@ public class MediaStorage {
     public MediaStorage() {
         media = new ArrayList<>();
         System.out.println("MediaStorage successfully loaded...");
-        Main.NewLine();
+        newLine();
         showMenuMain();
     }
 
     private static void showMenuMain() {
         int choice = 0;
 
-        Main.NewLine();
+        newLine();
 
         System.out.print("Welcome to MediaStorageCo©. Please select media..." +
                 "\n0. Exit.");
 
         for (int i = 0; i < Type.values().length; i++) {
-            String tmpType = Type.values()[i].toString();
-            tmpType = tmpType.substring(0, 1).toUpperCase() + tmpType.substring(1).toLowerCase();
-
-            System.out.print("\n" + (i + 1) + ". " + tmpType + ".");
+            System.out.print("\n" + (i + 1) + ". " + formatWord(Type.values()[i]) + ".");
         }
 
         System.out.print("\n" + (Type.values().length + 1) + ". All.");
@@ -36,7 +33,7 @@ public class MediaStorage {
         if (choice > 0 && choice < Type.values().length + 1) {
             databaseType = Type.values()[choice - 1];
         } else if (choice == 0) {
-            Main.NewLine();
+            newLine();
             System.out.print("Have a nice day! :)");
             System.exit(0);
         } else {
@@ -65,7 +62,7 @@ public class MediaStorage {
     private static void showMenuShow() {
         int choice;
 
-        Main.NewLine();
+        newLine();
 
         if (databaseType == null) {
             System.out.print("Databases loaded. Available options..." +
@@ -111,7 +108,7 @@ public class MediaStorage {
     }
 
     private static void showMenuView() {
-        Main.NewLine();
+        newLine();
 
         for (int i = 0; i < media.size(); i++) {
             printMediaObject(i);
@@ -127,17 +124,17 @@ public class MediaStorage {
         System.out.print("Search " + databaseType.toString().toLowerCase() + " database. Please select column: " +
                 "\n0. 1");
     }
+
     private static void showMenuAdd() {
         int choice;
         String title;
-        String uniqueStringValue;
         int uniqueIntValue;
         int person = 0;
         Category category;
 
         ArrayList<String[]> personList = Main.database.getPersonList();
 
-        Main.NewLine();
+        newLine();
 
         System.out.println(uniqueString + "(s):" +
                 "\n0. Back.");
@@ -154,58 +151,48 @@ public class MediaStorage {
         if (choice == 0) {
             showMenuShow();
         } else if (choice == (personList.size() + 1)) {
-            addPerson();
+            person = addPerson();
         } else {
             person = Integer.parseInt(personList.get(choice - 1)[0]);
         }
 
-        Main.NewLine();
+        newLine();
 
         System.out.print("Title: ");
         title = Main.userController.getUserString();
 
-        Main.NewLine();
+        newLine();
 
         System.out.print(uniqueInt + ": ");
-        uniqueIntValue = Main.userController.getUserInt(0, 9999);
+        uniqueIntValue = Main.userController.getUserInt(0, 999999);
 
-        Main.NewLine();
+        newLine();
 
         System.out.print("Categories...");
 
         for (int i = 0; i < Category.values().length; i++) {
-            String tmpCategory = Category.values()[i].toString();
-            tmpCategory = tmpCategory.substring(0, 1).toUpperCase() + tmpCategory.substring(1).toLowerCase();
-
-            System.out.print("\n" + (i) + ". " + tmpCategory + ".");
+            System.out.print("\n" + (i) + ". " + formatWord(Category.values()[i]) + ".");
         }
 
         System.out.print("\nCategory: ");
         category = Category.values()[Main.userController.getUserInt(0, Category.values().length)];
 
-        Main.NewLine();
+        newLine();
 
+        Main.database.addMedia(databaseType, title, category, person, uniqueIntValue);
 
+        media = Main.database.getDatabaseList(databaseType);
 
+        //addMedia(title, uniqueIntValue, person, category);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        showMenuShow();
     }
+
     private static void showMenuRemove() {}
+
     private static void showMenuChange() {}
+
+    //MENUS ABOVE
 
     private static void printMediaObject(int index) {
         Media object = media.get(index);
@@ -229,7 +216,42 @@ public class MediaStorage {
         System.out.println(". (" + object.getCategory().toString() + ")");
     }
 
-    private static void addPerson() {
+    private static int addPerson() {
+        String userInput;
 
+        System.out.print(uniqueString + " name: ");
+
+        userInput = Main.userController.getUserString();
+        userInput = formatWord(userInput);
+
+        return Main.database.addPerson(userInput);
+    }
+
+    private static void addMedia(String title, int uniqueIntValue, int person, Category category) {
+
+    }
+
+    public static String formatWord(Enum object) {
+        String formatedString = object.toString();
+        return formatedString.substring(0, 1).toUpperCase() + formatedString.substring(1).toLowerCase();
+    }
+
+    public static String formatWord(String string) {
+        String[] separated = string.split(" ");
+        String returnValue = "";
+
+        for (int i = 0; i < separated.length; i++) {
+            if (i == 0) {
+                returnValue += separated[i].substring(0, 1).toUpperCase() + separated[i].substring(1).toLowerCase();
+            } else {
+                returnValue += " " + separated[i].substring(0, 1).toUpperCase() + separated[i].substring(1).toLowerCase();
+            }
+        }
+
+        return returnValue;
+    }
+
+    public static void newLine() {
+        System.out.println("--------------------");
     }
 }

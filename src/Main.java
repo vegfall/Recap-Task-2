@@ -8,8 +8,4 @@ public class Main {
         userController = new UserController();
         mediaStorage = new MediaStorage();
     }
-
-    public static void NewLine() {
-        System.out.println("--------------------");
-    }
 }

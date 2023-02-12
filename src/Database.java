@@ -56,7 +56,6 @@ public class Database {
         } catch (SQLException error) {
             disconnectDatabase();
             error.printStackTrace();
-            System.exit(0);
         }
 
         disconnectDatabase();
@@ -80,11 +79,100 @@ public class Database {
         } catch (SQLException error) {
             disconnectDatabase();
             error.printStackTrace();
-            System.exit(0);
         }
 
         disconnectDatabase();
         return personList;
+    }
+
+    public static void addMedia(Type database, String title, Category category, int person, int uniqueInt) {
+        String stringColumnName = "";
+        String intColumnName = "";
+        String formatCategory = "'" + category.toString().toLowerCase() + "'";
+
+
+        if (database == Type.BOOK) {
+            stringColumnName = "Author";
+            intColumnName = "Pages";
+        } else if (database == Type.VIDEO) {
+            stringColumnName = "Director";
+            intColumnName = "Duration";
+        } else if (database == Type.GAME) {
+            stringColumnName = "Developer";
+            intColumnName = "Metascore";
+        }
+
+        connectDatabase();
+
+        try {
+            PreparedStatement sqlPrepareStatement = sqlConnection.prepareStatement(
+                    "INSERT INTO " + database + " (Id, Title, Category, " + stringColumnName + ", " + intColumnName + ")" +
+                        "VALUE (" + findAvailableId(database.toString()) + ", ?, " + formatCategory + ", " + person + ", " + uniqueInt + ")"
+            );
+
+            sqlPrepareStatement.setString(1, title);
+
+            sqlPrepareStatement.executeUpdate();
+        } catch (SQLException error) {
+            disconnectDatabase();
+            error.printStackTrace();
+        }
+    }
+
+    public static int addPerson(String name) {
+        int index = 0;
+
+        connectDatabase();
+
+        index = findAvailableId("person");
+
+        try {
+            PreparedStatement sqlPrepareStatement;
+
+            sqlPrepareStatement = sqlConnection.prepareStatement("INSERT INTO person (Id, Name) VALUE (" + index + ", ?)");
+
+            sqlPrepareStatement.setString(1, name);
+
+            sqlPrepareStatement.executeUpdate();
+        } catch (SQLException error) {
+            disconnectDatabase();
+            error.printStackTrace();
+        }
+
+        disconnectDatabase();
+
+        return index;
+    }
+
+    private static int findAvailableId(String database) {
+        int currentIndex = 0;
+        boolean spaceBetween = false;
+
+        connectDatabase();
+
+        try (Statement sqlStatement = sqlConnection.createStatement()) {
+            ResultSet result = sqlStatement.executeQuery("SELECT * FROM " + database);
+
+            while (result.next()) {
+                if (result.getInt("Id") > currentIndex + 1) {
+                    currentIndex++;
+                    spaceBetween = true;
+                    break;
+                } else {
+                    currentIndex++;
+                }
+            }
+
+            if (!spaceBetween) {
+                currentIndex++;
+            }
+        } catch (SQLException error) {
+            disconnectDatabase();
+            error.printStackTrace();
+        }
+
+        disconnectDatabase();
+        return currentIndex;
     }
 
     private static void connectDatabase() {
@@ -94,6 +182,9 @@ public class Database {
                     "mainUser",
                     "password123");
         } catch (SQLException error) {
+            if (sqlConnection != null) {
+                disconnectDatabase();
+            }
             error.printStackTrace();
         }
     }
