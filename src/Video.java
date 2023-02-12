@@ -1,18 +1,12 @@
 public class Video extends Media {
-    private final String director;
     private final int duration;
-
-    public String getDirector() {
-        return director;
-    }
 
     public int getDuration() {
         return duration;
     }
 
-    public Video(int id, String title, Category category, String director, int duration) {
-        super(Type.VIDEO, id, title, category);
-        this.director = director;
+    public Video(int id, String title, int director, Category category, int duration) {
+        super(Type.VIDEO, id, title, director, category);
         this.duration = duration;
     }
 }

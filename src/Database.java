@@ -19,8 +19,8 @@ public class Database {
                     list.add(new Book(
                             result.getInt("Id"),
                             result.getString("Title"),
+                            result.getInt("Author"),
                             Category.valueOf(result.getString("Category").toUpperCase()),
-                            result.getString("Author"),
                             result.getInt("Pages")
                     ));
                 }
@@ -33,8 +33,8 @@ public class Database {
                     list.add(new Video(
                             result.getInt("Id"),
                             result.getString("Title"),
+                            result.getInt("Director"),
                             Category.valueOf(result.getString("Category").toUpperCase()),
-                            result.getString("Director"),
                             result.getInt("Duration")
                     ));
                 }
@@ -47,8 +47,8 @@ public class Database {
                     list.add(new Game(
                             result.getInt("Id"),
                             result.getString("Title"),
+                            result.getInt("Developer"),
                             Category.valueOf(result.getString("Category").toUpperCase()),
-                            result.getString("Developer"),
                             result.getInt("Duration")
                     ));
                 }
@@ -119,6 +119,18 @@ public class Database {
         }
     }
 
+    public static void removeMedia(Type database, int Id) {
+        connectDatabase();
+
+        try (Statement sqlStatement = sqlConnection.createStatement()) {
+            sqlStatement.executeUpdate("DELETE FROM " + database + " WHERE Id = " + Id);
+        } catch (SQLException error) {
+            error.printStackTrace();
+        } finally {
+            disconnectDatabase();
+        }
+    }
+
     public static int addPerson(String name) {
         int index = 0;
 
@@ -142,6 +154,26 @@ public class Database {
         disconnectDatabase();
 
         return index;
+    }
+
+    public static String getPerson(int index) {
+        String name = "";
+
+        connectDatabase();
+
+        try (Statement sqlStatement = sqlConnection.createStatement()) {
+            ResultSet result = sqlStatement.executeQuery("SELECT * FROM person WHERE Id = " + index);
+
+            while (result.next()) {
+                name = result.getString("Name");
+            }
+        } catch (SQLException error) {
+            disconnectDatabase();
+            error.printStackTrace();
+        }
+
+        disconnectDatabase();
+        return name;
     }
 
     private static int findAvailableId(String database) {

@@ -40,7 +40,7 @@ public class MediaStorage {
             databaseType = null;
         }
 
-        media = Main.database.getDatabaseList(databaseType);
+        updateList();
 
         if (databaseType == Type.BOOK) {
             uniqueString = "Author";
@@ -109,6 +109,8 @@ public class MediaStorage {
 
     private static void showMenuView() {
         newLine();
+
+        System.out.println(formatWord(databaseType) + " elements.");
 
         for (int i = 0; i < media.size(); i++) {
             printMediaObject(i);
@@ -181,14 +183,33 @@ public class MediaStorage {
 
         Main.database.addMedia(databaseType, title, category, person, uniqueIntValue);
 
-        media = Main.database.getDatabaseList(databaseType);
-
-        //addMedia(title, uniqueIntValue, person, category);
+        updateList();
 
         showMenuShow();
     }
 
-    private static void showMenuRemove() {}
+    private static void showMenuRemove() {
+        int choice = 0;
+
+        newLine();
+
+        System.out.println(formatWord(databaseType) + " elements." +
+                "\n0. Back.");
+
+        for (int i = 0; i < media.size(); i++) {
+            printMediaObject(i);
+        }
+
+        System.out.print("WARNING! You're about to delete an item. Select 0 to cancel or select the Id of the item to delete: ");
+        choice = Main.userController.getUserInt(0, media.size());
+
+        if (choice != 0) {
+            Main.database.removeMedia(databaseType, choice);
+            updateList();
+        }
+
+        showMenuShow();
+    }
 
     private static void showMenuChange() {}
 
@@ -197,20 +218,20 @@ public class MediaStorage {
     private static void printMediaObject(int index) {
         Media object = media.get(index);
 
-        System.out.print("[" + object.getType() + "] " + object.getId() + ". " + object.getTitle() + " - ");
+        System.out.print((index + 1) + ". [" + object.getType() + "] " + object.getTitle() + " - " + Main.database.getPerson(object.getPerson()) + ". ");
 
         if (object.getType() == Type.BOOK) {
             Book book = (Book)object;
 
-            System.out.print(book.getAuthor() + ". Pages: " + book.getPages());
+            System.out.print("Pages: " + book.getPages());
         } else if (object.getType() == Type.VIDEO) {
             Video video = (Video)object;
 
-            System.out.print(video.getDirector() + ". Duration: " + video.getDuration());
+            System.out.print("Duration: " + video.getDuration());
         } else if (object.getType() == Type.GAME) {
             Game game = (Game)object;
 
-            System.out.print(game.getDeveloper() + ". Metascore: " + game.getMetascore());
+            System.out.print("Metascore: " + game.getMetascore());
         }
 
         System.out.println(". (" + object.getCategory().toString() + ")");
@@ -225,10 +246,6 @@ public class MediaStorage {
         userInput = formatWord(userInput);
 
         return Main.database.addPerson(userInput);
-    }
-
-    private static void addMedia(String title, int uniqueIntValue, int person, Category category) {
-
     }
 
     public static String formatWord(Enum object) {
@@ -251,7 +268,11 @@ public class MediaStorage {
         return returnValue;
     }
 
-    public static void newLine() {
+    private static void newLine() {
         System.out.println("--------------------");
+    }
+
+    private static void updateList() {
+        media = Main.database.getDatabaseList(databaseType);
     }
 }

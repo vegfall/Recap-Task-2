@@ -1,6 +1,7 @@
 public abstract class Media {
     private final int id;
     private final String title;
+    private final int person;
     private final Category category;
     private final Type type;
 
@@ -11,6 +12,9 @@ public abstract class Media {
     public String getTitle() {
         return title;
     }
+    public int getPerson() {
+        return person;
+    }
 
     public Category getCategory() {
         return category;
@@ -20,7 +24,8 @@ public abstract class Media {
         return type;
     }
 
-    public Media(Type type, int id, String title, Category category) {
+    public Media(Type type, int id, String title, int person, Category category) {
+        this.person = person;
         this.type = type;
         this.id = id;
         this.title = title;
