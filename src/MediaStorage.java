@@ -91,7 +91,7 @@ public class MediaStorage {
         System.out.println(formatWord(databaseType) + " elements:");
 
         for (int i = 0; i < media.size(); i++) {
-            printMediaObject(i);
+            printMediaObject(i, true);
         }
 
         System.out.print("Press enter to return...");
@@ -101,8 +101,80 @@ public class MediaStorage {
     }
 
     private static void showMenuSearch() {
-        System.out.print("Search " + databaseType.toString().toLowerCase() + " database. Please select column: " +
-                "\n0. 1");
+        String userInput;
+
+        ArrayList<Integer> resultList = new ArrayList<>();
+        ArrayList<String[]> personList = Main.database.getPersonList();
+
+        newLine();
+
+        if (databaseType == null) {
+            System.out.print("Search all media. ");
+        } else {
+            System.out.print("Search " + databaseType.toString().toLowerCase() + ". ");
+        }
+
+        System.out.print("Please type in search term: ");
+        userInput = Main.userController.getUserString().toLowerCase();
+
+        for (int i = 0; i < media.size(); i++) {
+            if (media.get(i).getType() == Type.BOOK) {
+                Book object = (Book)media.get(i);
+
+                if (Integer.toString(object.getPages()).toLowerCase().contains(userInput)) {
+                    resultList.add(i);
+                    break;
+                }
+            } else if (media.get(i).getType() == Type.VIDEO) {
+                Video object = (Video)media.get(i);
+
+                if (Integer.toString(object.getDuration()).toLowerCase().contains(userInput)) {
+                    resultList.add(i);
+                    break;
+                }
+            } else if (media.get(i).getType() == Type.GAME) {
+                Game object = (Game)media.get(i);
+
+                if (Integer.toString(object.getMetascore()).toLowerCase().contains(userInput)) {
+                    resultList.add(i);
+                    break;
+                }
+            }
+
+            Media object = media.get(i);
+
+            if (object.getTitle().toLowerCase().contains(userInput)
+            || object.getCategory().toString().toLowerCase().contains(userInput)
+            || object.getType().toString().toLowerCase().contains(userInput)) {
+                resultList.add(i);
+                break;
+            } else {
+                for (int o = 0; o < personList.size(); o++) {
+                    String name = personList.get(o)[1];
+
+                    if (object.getPerson() == Integer.parseInt(personList.get(o)[0]) &&
+                    personList.get(o)[1].toLowerCase().contains(userInput)) {
+                        resultList.add(i);
+                        break;
+                    }
+                }
+            }
+        }
+
+        newLine();
+
+        if (resultList.size() == 0) {
+            System.out.println("No media found with keyword: " + userInput);
+        } else {
+            for (int i = 0; i < resultList.size(); i++) {
+                printMediaObject(resultList.get(i), false);
+            }
+        }
+
+        System.out.print("Press enter to continue...");
+        Main.userController.getUserString();
+
+        showMenuShow();
     }
 
     private static void showMenuAdd() {
@@ -173,7 +245,7 @@ public class MediaStorage {
                 "\n0. Back.");
 
         for (int i = 0; i < media.size(); i++) {
-            printMediaObject(i);
+            printMediaObject(i, true);
         }
 
         System.out.print("WARNING! You're about to delete an item. Select 0 to cancel or select the Id of the item to delete: ");
@@ -201,7 +273,7 @@ public class MediaStorage {
                 "\n0. Back.");
 
         for (int i = 0; i < media.size(); i++) {
-            printMediaObject(i);
+            printMediaObject(i, true);
         }
 
         System.out.print("Please select media to change: ");
@@ -209,7 +281,7 @@ public class MediaStorage {
 
         newLine();
 
-        printMediaObject(choice - 1);
+        printMediaObject(choice - 1, true);
         object = media.get(choice - 1);
 
         System.out.print(
@@ -260,16 +332,25 @@ public class MediaStorage {
                 break;
         }
 
-        Main.database.changeMedia(object.getType(), object.getId(), column, newValue);
+        if (choice != 0) {
+            Main.database.changeMedia(object.getType(), object.getId(), column, newValue);
 
+            updateList();
+        }
+
+        showMenuShow();
     }
 
     //MENUS ABOVE
 
-    private static void printMediaObject(int index) {
+    private static void printMediaObject(int index, boolean showIndex) {
         Media object = media.get(index);
 
-        System.out.print((index + 1) + ".\t [" + object.getType() + "] " + object.getTitle() + " - " + Main.database.getPerson(object.getPerson()) + " | ");
+        if (showIndex) {
+            System.out.print((index + 1) + ".\t");
+        }
+
+        System.out.print("[" + object.getType() + "] " + object.getTitle() + " - " + Main.database.getPerson(object.getPerson()) + " | ");
 
         if (object.getType() == Type.BOOK) {
             Book book = (Book)object;
