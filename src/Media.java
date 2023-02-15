@@ -1,47 +1,47 @@
 public abstract class Media {
-    private final int id;
-    private final String title;
-    private final String personTitle;
-    private final int person;
-    private final Category category;
-    private final Type type;
-    private final String intTitle;
+    private final int ID;
+    private final String TITLE;
+    private final String PERSON_TITLE;
+    private final int PERSON;
+    private final Category CATEGORY;
+    private final Type TYPE;
+    private final String INT_TITLE;
 
-    public int getId() {
-        return id;
+    public int getID() {
+        return ID;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTITLE() {
+        return TITLE;
     }
 
-    public String getPersonTitle() {
-        return personTitle;
+    public String getPERSON_TITLE() {
+        return PERSON_TITLE;
     }
 
-    public String getIntTitle() {
-        return intTitle;
+    public String getINT_TITLE() {
+        return INT_TITLE;
     }
 
-    public int getPerson() {
-        return person;
+    public int getPERSON() {
+        return PERSON;
     }
 
-    public Category getCategory() {
-        return category;
+    public Category getCATEGORY() {
+        return CATEGORY;
     }
 
-    public Type getType() {
-        return type;
+    public Type getTYPE() {
+        return TYPE;
     }
 
     public Media(Type type, int id, String title, String personTitle, String intTitle, int person, Category category) {
-        this.personTitle = personTitle;
-        this.intTitle = intTitle;
-        this.person = person;
-        this.type = type;
-        this.id = id;
-        this.title = title;
-        this.category = category;
+        this.PERSON_TITLE = personTitle;
+        this.INT_TITLE = intTitle;
+        this.PERSON = person;
+        this.TYPE = type;
+        this.ID = id;
+        this.TITLE = title;
+        this.CATEGORY = category;
     }
 }

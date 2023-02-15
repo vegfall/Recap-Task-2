@@ -2,7 +2,6 @@ CREATE TABLE book (Id int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT, Title varcha
 CREATE TABLE video (Id int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT, Title varchar(255), Category enum('fantasy', 'horror', 'action', 'science_fiction'), Director varchar(255), Duration int(255));
 CREATE TABLE game (Id int(255) NOT NULL PRIMARY KEY AUTO_INCREMENT, Title varchar(255), Category enum('fantasy', 'horror', 'action', 'science_fiction'), Developer varchar(255), Metascore int(255));
 
-
 SELECT * FROM book;
 INSERT INTO book (Id, Title, Category, Author, Pages) VALUE (2, 'ThisBook', 'horror', 'AnAuthor', 400); 
 INSERT INTO video (Id, Title, Category, Director, Duration) VALUE (1, 'ThisMovie', 'action', 'ADirector', 650);

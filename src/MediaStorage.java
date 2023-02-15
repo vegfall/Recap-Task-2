@@ -118,24 +118,24 @@ public class MediaStorage {
         userInput = Main.userController.getUserString().toLowerCase();
 
         for (int i = 0; i < media.size(); i++) {
-            if (media.get(i).getType() == Type.BOOK) {
+            if (media.get(i).getTYPE() == Type.BOOK) {
                 Book object = (Book)media.get(i);
 
-                if (Integer.toString(object.getPages()).toLowerCase().contains(userInput)) {
+                if (Integer.toString(object.getPAGES()).toLowerCase().contains(userInput)) {
                     resultList.add(i);
                     break;
                 }
-            } else if (media.get(i).getType() == Type.VIDEO) {
+            } else if (media.get(i).getTYPE() == Type.VIDEO) {
                 Video object = (Video)media.get(i);
 
-                if (Integer.toString(object.getDuration()).toLowerCase().contains(userInput)) {
+                if (Integer.toString(object.getDURATION()).toLowerCase().contains(userInput)) {
                     resultList.add(i);
                     break;
                 }
-            } else if (media.get(i).getType() == Type.GAME) {
+            } else if (media.get(i).getTYPE() == Type.GAME) {
                 Game object = (Game)media.get(i);
 
-                if (Integer.toString(object.getMetascore()).toLowerCase().contains(userInput)) {
+                if (Integer.toString(object.getMETASCORE()).toLowerCase().contains(userInput)) {
                     resultList.add(i);
                     break;
                 }
@@ -143,16 +143,16 @@ public class MediaStorage {
 
             Media object = media.get(i);
 
-            if (object.getTitle().toLowerCase().contains(userInput)
-            || object.getCategory().toString().toLowerCase().contains(userInput)
-            || object.getType().toString().toLowerCase().contains(userInput)) {
+            if (object.getTITLE().toLowerCase().contains(userInput)
+            || object.getCATEGORY().toString().toLowerCase().contains(userInput)
+            || object.getTYPE().toString().toLowerCase().contains(userInput)) {
                 resultList.add(i);
                 break;
             } else {
                 for (int o = 0; o < personList.size(); o++) {
                     String name = personList.get(o)[1];
 
-                    if (object.getPerson() == Integer.parseInt(personList.get(o)[0]) &&
+                    if (object.getPERSON() == Integer.parseInt(personList.get(o)[0]) &&
                     personList.get(o)[1].toLowerCase().contains(userInput)) {
                         resultList.add(i);
                         break;
@@ -252,7 +252,7 @@ public class MediaStorage {
         choice = Main.userController.getUserInt(media.size());
 
         if (choice != 0) {
-            Main.database.removeMedia(media.get(choice - 1).getType(), media.get(choice - 1).getId());
+            Main.database.removeMedia(media.get(choice - 1).getTYPE(), media.get(choice - 1).getID());
             updateList();
 
             System.out.println("Element successfully deleted.");
@@ -287,8 +287,8 @@ public class MediaStorage {
         System.out.print(
                 "0. Back." +
                 "\n1. Title." +
-                "\n2. " + object.getPersonTitle() + "." +
-                "\n3. " + object.getIntTitle() + "." +
+                "\n2. " + object.getPERSON_TITLE() + "." +
+                "\n3. " + object.getINT_TITLE() + "." +
                 "\n4. Category.");
 
         System.out.print("\nValue to change: ");
@@ -303,18 +303,18 @@ public class MediaStorage {
                 newValue = Main.userController.getUserString();
                 break;
             case 2:
-                if (object.getType() == Type.BOOK) {
+                if (object.getTYPE() == Type.BOOK) {
                     column = "Author";
-                } else if (object.getType() == Type.VIDEO) {
+                } else if (object.getTYPE() == Type.VIDEO) {
                     column = "Director";
-                } else if (object.getType() == Type.GAME) {
+                } else if (object.getTYPE() == Type.GAME) {
                     column = "Developer";
                 }
 
                 newValue = Integer.toString(showPersonList());
                 break;
             case 3:
-                column = object.getIntTitle();
+                column = object.getINT_TITLE();
 
                 System.out.print(column + ": ");
                 newValue = Integer.toString(Main.userController.getUserInt(99999));
@@ -333,7 +333,7 @@ public class MediaStorage {
         }
 
         if (choice != 0) {
-            Main.database.changeMedia(object.getType(), object.getId(), column, newValue);
+            Main.database.changeMedia(object.getTYPE(), object.getID(), column, newValue);
 
             updateList();
         }
@@ -350,23 +350,23 @@ public class MediaStorage {
             System.out.print((index + 1) + ".\t");
         }
 
-        System.out.print("[" + object.getType() + "] " + object.getTitle() + " - " + Main.database.getPerson(object.getPerson()) + " | ");
+        System.out.print("[" + object.getTYPE() + "] " + object.getTITLE() + " - " + Main.database.getPerson(object.getPERSON()) + " | ");
 
-        if (object.getType() == Type.BOOK) {
+        if (object.getTYPE() == Type.BOOK) {
             Book book = (Book)object;
 
-            System.out.print("Pages: " + book.getPages());
-        } else if (object.getType() == Type.VIDEO) {
+            System.out.print("Pages: " + book.getPAGES());
+        } else if (object.getTYPE() == Type.VIDEO) {
             Video video = (Video)object;
 
-            System.out.print("Duration: " + video.getDuration());
-        } else if (object.getType() == Type.GAME) {
+            System.out.print("Duration: " + video.getDURATION());
+        } else if (object.getTYPE() == Type.GAME) {
             Game game = (Game)object;
 
-            System.out.print("Metascore: " + game.getMetascore());
+            System.out.print("Metascore: " + game.getMETASCORE());
         }
 
-        System.out.println(". (" + object.getCategory().toString() + ")");
+        System.out.println(". (" + object.getCATEGORY().toString() + ")");
     }
 
     private static int showPersonList() {

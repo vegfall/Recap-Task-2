@@ -1,13 +1,13 @@
 public class Book extends Media {
-    private final int pages;
+    private final int PAGES;
 
-    public int getPages() {
-        return pages;
+    public int getPAGES() {
+        return PAGES;
     }
 
     public Book(int id, String title, int author, Category category, int pages) {
         super(Type.BOOK, id, title, "Author", "Pages", author, category);
-        this.pages = pages;
+        this.PAGES = pages;
     }
 
 }
