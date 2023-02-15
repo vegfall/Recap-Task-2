@@ -6,7 +6,7 @@ public class Game extends Media {
     }
 
     public Game(int id, String title, int developer, Category category, int metascore) {
-        super(Type.GAME, id, title, developer, category);
+        super(Type.GAME, id, title, "Developer", "Metascore", developer, category);
         this.metascore = metascore;
     }
 }

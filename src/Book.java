@@ -6,7 +6,7 @@ public class Book extends Media {
     }
 
     public Book(int id, String title, int author, Category category, int pages) {
-        super(Type.BOOK, id, title, author, category);
+        super(Type.BOOK, id, title, "Author", "Pages", author, category);
         this.pages = pages;
     }
 

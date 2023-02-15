@@ -54,11 +54,11 @@ public class Database {
                 }
             }
         } catch (SQLException error) {
-            disconnectDatabase();
             error.printStackTrace();
+        } finally {
+            disconnectDatabase();
         }
 
-        disconnectDatabase();
         return list;
     }
 
@@ -77,11 +77,11 @@ public class Database {
             }
 
         } catch (SQLException error) {
-            disconnectDatabase();
             error.printStackTrace();
+        } finally {
+            disconnectDatabase();
         }
 
-        disconnectDatabase();
         return personList;
     }
 
@@ -114,8 +114,9 @@ public class Database {
 
             sqlPrepareStatement.executeUpdate();
         } catch (SQLException error) {
-            disconnectDatabase();
             error.printStackTrace();
+        } finally {
+            disconnectDatabase();
         }
     }
 
@@ -124,6 +125,23 @@ public class Database {
 
         try (Statement sqlStatement = sqlConnection.createStatement()) {
             sqlStatement.executeUpdate("DELETE FROM " + database + " WHERE Id = " + Id);
+        } catch (SQLException error) {
+            error.printStackTrace();
+        } finally {
+            disconnectDatabase();
+        }
+    }
+
+    public static void changeMedia(Type database, int Id, String column, String newValue) {
+        connectDatabase();
+
+        try {
+            PreparedStatement sqlPrepareStatement = sqlConnection.prepareStatement(
+                    "UPDATE " + database + " SET " + column + " = ? WHERE ID = " + Id);
+
+            sqlPrepareStatement.setString(1, newValue);
+
+            sqlPrepareStatement.executeUpdate();
         } catch (SQLException error) {
             error.printStackTrace();
         } finally {
@@ -147,11 +165,10 @@ public class Database {
 
             sqlPrepareStatement.executeUpdate();
         } catch (SQLException error) {
-            disconnectDatabase();
             error.printStackTrace();
+        } finally {
+            disconnectDatabase();
         }
-
-        disconnectDatabase();
 
         return index;
     }
@@ -168,19 +185,17 @@ public class Database {
                 name = result.getString("Name");
             }
         } catch (SQLException error) {
-            disconnectDatabase();
             error.printStackTrace();
+        } finally {
+            disconnectDatabase();
         }
 
-        disconnectDatabase();
         return name;
     }
 
     private static int findAvailableId(String database) {
         int currentIndex = 0;
         boolean spaceBetween = false;
-
-        connectDatabase();
 
         try (Statement sqlStatement = sqlConnection.createStatement()) {
             ResultSet result = sqlStatement.executeQuery("SELECT * FROM " + database);
@@ -199,11 +214,9 @@ public class Database {
                 currentIndex++;
             }
         } catch (SQLException error) {
-            disconnectDatabase();
             error.printStackTrace();
         }
 
-        disconnectDatabase();
         return currentIndex;
     }
 

@@ -7,7 +7,7 @@ public class UserController {
     }
 
     public static int getUserInt(int min, int max) {
-        int value = 0;
+        int value = -1;
         boolean valid = false;
 
         while (!valid) {
@@ -21,6 +21,27 @@ public class UserController {
                 valid = true;
             } else {
                 System.out.print("Please type in a valid number between " + min + " - " + max + ": ");
+            }
+        }
+
+        return value;
+    }
+
+    public static int getUserInt(int max) {
+        int value = -1;
+        boolean valid = false;
+
+        while (!valid) {
+            input = new Scanner(System.in);
+
+            if (input.hasNextInt()) {
+                value = input.nextInt();
+            }
+
+            if (value >= 0 && value <= max) {
+                valid = true;
+            } else {
+                System.out.print("Please type in a valid number between 0 - " + max + ": ");
             }
         }
 

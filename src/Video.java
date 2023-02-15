@@ -6,7 +6,7 @@ public class Video extends Media {
     }
 
     public Video(int id, String title, int director, Category category, int duration) {
-        super(Type.VIDEO, id, title, director, category);
+        super(Type.VIDEO, id, title, "Director", "Duration", director, category);
         this.duration = duration;
     }
 }
